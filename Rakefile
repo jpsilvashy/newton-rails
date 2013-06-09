@@ -11,13 +11,13 @@ namespace :newton do
     end
   end
 
-  NEWTON_JS     = FileList["bootstrap/js/*.*"]
+  NEWTON_JS = FileList["newton/js/*.*"]
   ASSETS_JS = NEWTON_JS.pathmap("app/assets/javascripts/newton/newton/%f")
   ASSETS_JS.zip(NEWTON_JS).each do |target, source|
     file target => [source] { cp source, target, verbose: true }
   end
 
-  NEWTON_SCSS = FileList["bootstrap/scss/*.*"]
+  NEWTON_SCSS = FileList["newton/scss/*.*"]
   ASSETS_SCSS = NEWTON_SCSS.pathmap("app/assets/stylesheets/newton/newton/_%f")
   ASSETS_SCSS.zip(NEWTON_SCSS).each do |target, source|
     target.gsub!(/__/, '_')

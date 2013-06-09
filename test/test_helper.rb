@@ -1,2 +1,2 @@
-require 'bootstrap-rails'
+require 'newton-rails'
 require 'test/unit'

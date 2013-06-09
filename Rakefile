@@ -11,7 +11,7 @@ namespace :newton do
     end
   end
 
-  NEWTON_JS = FileList["newton/js/*.*"]
+  NEWTON_JS = FileList["newton/javascripts/*.*"]
   ASSETS_JS = NEWTON_JS.pathmap("app/assets/javascripts/newton/newton/%f")
   ASSETS_JS.zip(NEWTON_JS).each do |target, source|
     file target => [source] { cp source, target, verbose: true }

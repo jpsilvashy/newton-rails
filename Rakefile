@@ -12,14 +12,14 @@ namespace :newton do
   end
 
   NEWTON_JS = FileList["newton/javascripts/*.*"]
-  ASSETS_JS = NEWTON_JS.pathmap("app/assets/javascripts/newton/newton/%f")
+  ASSETS_JS = NEWTON_JS.pathmap("app/assets/javascripts/newton/%f")
   ASSETS_JS.zip(NEWTON_JS).each do |target, source|
     file target => [source] { cp source, target, verbose: true }
   end
 
-  NEWTON_SCSS = FileList["newton/scss/*.*"]
-  ASSETS_SCSS = NEWTON_SCSS.pathmap("app/assets/stylesheets/newton/newton/_%f")
-  ASSETS_SCSS.zip(NEWTON_SCSS).each do |target, source|
+  NEWTON_CSS = FileList["newton/stylesheets/*.*"]
+  ASSETS_CSS = NEWTON_CSS.pathmap("app/assets/stylesheets/newton/%f")
+  ASSETS_CSS.zip(NEWTON_CSS).each do |target, source|
     target.gsub!(/__/, '_')
     file target => [source] { cp source, target, verbose: true }
   end
@@ -34,23 +34,18 @@ namespace :newton do
     order.each_with_index {|o, i| js[o] = i }
 
     list = js.to_a.sort {|a,b| a[1] <=> b[1]}.map{|p| p[0]}
-    File.write "app/assets/javascripts/newton/newton.js", list.map {|f| "//= require newton/newton/#{f}"}.join("\n")
-  end
-
-  desc "Update Newton SCSS"
-  task :scss => ASSETS_SCSS do
-    File.write "app/assets/stylesheets/newton/newton.scss", '@import "newton/newton/newton";'
+    File.write "app/assets/javascripts/newton.js", list.map {|f| "//= require newton/#{f}"}.join("\n")
   end
 
   desc "Clean gem assets files"
   task :clean do
     FileUtils.rm_rf 'app/assets'
-    FileUtils.mkpath 'app/assets/javascripts/newton/newton'
-    FileUtils.mkpath 'app/assets/stylesheets/newton/newton'
+    FileUtils.mkpath 'app/assets/javascripts/newton'
+    FileUtils.mkpath 'app/assets/stylesheets/newton'
   end
 
   desc "Update Newton Assets"
-  task :assets => [:pull, :clean, :scss, :js]
+  task :assets => [:pull, :clean, :js]
 
 end
 
